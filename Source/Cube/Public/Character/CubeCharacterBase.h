@@ -3,11 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
 #include "CubeCharacterBase.generated.h"
 
+
+class UAttributeSet;
+class UAbilitySystemComponent;
+
 UCLASS(Abstract)
-class CUBE_API ACubeCharacterBase : public ACharacter
+class CUBE_API ACubeCharacterBase : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -17,7 +22,19 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category="CubeMovement")
 	float DistanceToMove = 100.f;
+
+	/*Ability system Interface*/
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	
+	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 	
 protected:
 	virtual void BeginPlay() override;
+
+	UPROPERTY()
+	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+
+	UPROPERTY()
+	TObjectPtr<UAttributeSet> AttributeSet;
+	
 };
