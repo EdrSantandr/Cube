@@ -29,6 +29,8 @@ UAbilitySystemComponent* ACubeCharacterBase::GetAbilitySystemComponent() const
 void ACubeCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
+	check(AbilitySystemComponent);
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 }
 
 

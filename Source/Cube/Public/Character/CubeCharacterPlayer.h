@@ -16,9 +16,9 @@ class CUBE_API ACubeCharacterPlayer : public ACubeCharacterBase
 {
 	GENERATED_BODY()
 
-	ACubeCharacterPlayer();
-	
 public:
+	ACubeCharacterPlayer();
+
 	UPROPERTY(EditDefaultsOnly, Category="CubeCamera")
 	TObjectPtr<USpringArmComponent> SpringArmComponent;
 
