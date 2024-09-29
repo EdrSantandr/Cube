@@ -6,6 +6,8 @@
 #include "Character/CubeCharacterBase.h"
 #include "CubeCharacterPlayer.generated.h"
 
+class UCameraComponent;
+class USpringArmComponent;
 /**
  * 
  */
@@ -13,5 +15,14 @@ UCLASS()
 class CUBE_API ACubeCharacterPlayer : public ACubeCharacterBase
 {
 	GENERATED_BODY()
+
+	ACubeCharacterPlayer();
+	
+public:
+	UPROPERTY(EditDefaultsOnly, Category="CubeCamera")
+	TObjectPtr<USpringArmComponent> SpringArmComponent;
+
+	UPROPERTY(EditDefaultsOnly, Category="CubeCamera")
+	TObjectPtr<UCameraComponent> CameraComponent;
 	
 };
