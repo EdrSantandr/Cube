@@ -40,7 +40,7 @@ void ACubePlayerController::Move(const FInputActionValue& InputActionValue)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("FORWARD direction [%s] inputaxisvector Y [%f]"),*ForwardDirection.ToString(), InputAxisVector.Y);
 		UE_LOG(LogTemp, Warning, TEXT("RIGHT direction [%s] inputaxisvector X [%f]"),*RightDirection.ToString(), InputAxisVector.X);
-		ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
-		ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
+		ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y, true);
+		ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X, true);
 	}
 }

@@ -13,7 +13,11 @@ class CUBE_API ACubeCharacterBase : public ACharacter
 
 public:
 	ACubeCharacterBase();
+	virtual void AddMovementInput(FVector WorldDirection, float ScaleValue, bool bForce) override;
 
+	UPROPERTY(EditDefaultsOnly, Category="CubeMovement")
+	float DistanceToMove = 100.f;
+	
 protected:
 	virtual void BeginPlay() override;
 };
