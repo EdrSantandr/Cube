@@ -7,7 +7,6 @@
 #include "GameFramework/Character.h"
 #include "CubeCharacterBase.generated.h"
 
-
 class UAttributeSet;
 class UAbilitySystemComponent;
 
@@ -28,9 +27,6 @@ public:
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
 	virtual void BeginPlay() override;
-
-	UFUNCTION(BlueprintImplementableEvent, Category="CubeMovement")
-	void StartInteraction(const float InteractionTime);
 	
 protected:
 	UPROPERTY()
@@ -38,5 +34,10 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
-	
+
+	FTimerHandle RotationTimerHandle;
+	FTimerDelegate RotationDelegate;
+
+	UFUNCTION()
+	void FinishMovement(const FVector& InActorLocation);
 };

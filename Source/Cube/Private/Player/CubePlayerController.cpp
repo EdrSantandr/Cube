@@ -38,9 +38,10 @@ void ACubePlayerController::Move(const FInputActionValue& InputActionValue)
 
 	if (APawn* ControlledPawn = GetPawn<APawn>())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("FORWARD direction [%s] inputaxisvector Y [%f]"),*ForwardDirection.ToString(), InputAxisVector.Y);
-		UE_LOG(LogTemp, Warning, TEXT("RIGHT direction [%s] inputaxisvector X [%f]"),*RightDirection.ToString(), InputAxisVector.X);
-		ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y, true);
-		ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X, true);
+		if (!FMath::IsNearlyZero(InputAxisVector.Y))
+			ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y, true);
+
+		if (!FMath::IsNearlyZero(InputAxisVector.X))
+			ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X, true);
 	}
 }
