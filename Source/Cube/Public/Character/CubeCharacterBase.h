@@ -28,6 +28,9 @@ public:
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
 	virtual void BeginPlay() override;
+
+	UFUNCTION(BlueprintImplementableEvent, Category="CubeMovement")
+	void StartInteraction(const float InteractionTime);
 	
 protected:
 	UPROPERTY()

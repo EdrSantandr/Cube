@@ -19,6 +19,13 @@ ACubeCharacterBase::ACubeCharacterBase()
 void ACubeCharacterBase::AddMovementInput(FVector WorldDirection, float ScaleValue, bool bForce)
 {
 	SetActorLocation(GetActorLocation() + WorldDirection * ScaleValue * DistanceToMove);
+	// Get the movement time attribute
+	if (const UCubeAttributeSet* CubeAttributeSet = Cast<UCubeAttributeSet>(AttributeSet))
+	{
+		const float MovementTime = CubeAttributeSet->MovementTime.GetCurrentValue();
+		UE_LOG(LogTemp, Warning, TEXT("MovementTime: [%f]"), MovementTime);
+		StartInteraction(MovementTime);
+	}
 }
 
 UAbilitySystemComponent* ACubeCharacterBase::GetAbilitySystemComponent() const
