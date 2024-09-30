@@ -27,7 +27,9 @@ public:
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
 	virtual void BeginPlay() override;
-	
+
+	virtual void Tick(float DeltaSeconds) override;
+
 protected:
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
@@ -40,4 +42,19 @@ protected:
 
 	UFUNCTION()
 	void FinishMovement(const FVector& InActorLocation);
+
+private:
+	bool bMeshRotation = false;
+	FVector RotationDirection = FVector::ZeroVector;
+	float ElapsedTimeRotation = 0.f;
+	float SquareDiagonal = 0.f;
+	float SquareExtend = 0.f;
+	float InteractionTime = 0.f;
+	float InitialHeight = 0.f;
+
+	UFUNCTION()
+	void ControlHeight(float InDelta);
+
+	UFUNCTION()
+	void CalculateDiagonal();
 };
