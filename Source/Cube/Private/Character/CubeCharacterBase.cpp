@@ -18,12 +18,13 @@ ACubeCharacterBase::ACubeCharacterBase()
 
 void ACubeCharacterBase::AddMovementInput(FVector WorldDirection, float ScaleValue, bool bForce)
 {
-	const FVector FinalLocation = GetActorLocation() + WorldDirection * ScaleValue * DistanceToMove;
+	RotationDirection = WorldDirection * ScaleValue * DistanceToMove;
+	InitialActorLocation = GetActorLocation();
+	const FVector FinalLocation = InitialActorLocation + RotationDirection;
 	if (const UCubeAttributeSet* CubeAttributeSet = Cast<UCubeAttributeSet>(AttributeSet))
 	{
 		InteractionTime = CubeAttributeSet->MovementTime.GetCurrentValue();
 		bMeshRotation = true;
-		RotationDirection = WorldDirection;
 		ElapsedTimeRotation = 0.f;
 		//InitialHeight = GetMesh()->GetComponentLocation().Z;
 		CalculateDiagonal();
@@ -74,24 +75,22 @@ void ACubeCharacterBase::ControlHeight(float InDelta)
 		float DeltaZ = ElapsedTimeRotation/InteractionTime * DistanceToMove - SquareExtend;
 		DeltaZ = FMath::Square(DeltaZ);
 		DeltaZ = FMath::Square(SquareDiagonal) - DeltaZ;
-		UE_LOG(LogTemp, Warning, TEXT("first DeltaZ [%f]"), DeltaZ);
 		DeltaZ = FMath::Sqrt(DeltaZ) + InitialHeight;
-		UE_LOG(LogTemp, Warning, TEXT("After [%f]"), DeltaZ);
+
+		FVector DeltaTraslation = ElapsedTimeRotation/InteractionTime * RotationDirection;
+		DeltaTraslation = InitialActorLocation + DeltaTraslation;
 		
-		const FVector ActorDeltaLocation = FVector(0.f,0.f, DeltaZ);
+		const FVector ActorDeltaLocation = FVector(DeltaTraslation.X, DeltaTraslation.Y, DeltaZ);
 		SetActorLocation(ActorDeltaLocation);
 	}
 }
 
 void ACubeCharacterBase::CalculateDiagonal()
 {
-	//getme
 	FTransform LocalTransform;
 	FVector BoxExtend = GetMesh()->CalcBounds(LocalTransform).BoxExtent;
-	//UE_LOG(LogTemp, Warning, TEXT("Box extend [%s]"),*BoxExtend.ToString());
 	//This is only because it's a square 
 	SquareDiagonal = FMath::Sqrt(2.f)*BoxExtend.X;
-	UE_LOG(LogTemp, Warning, TEXT("Diagonal [%f]"), SquareDiagonal);
 	SquareExtend = BoxExtend.X;
 	InitialHeight = 0.f;
 }

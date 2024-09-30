@@ -51,7 +51,8 @@ private:
 	float SquareExtend = 0.f;
 	float InteractionTime = 0.f;
 	float InitialHeight = 0.f;
-
+	FVector InitialActorLocation = FVector::ZeroVector;
+	
 	UFUNCTION()
 	void ControlHeight(float InDelta);
 
