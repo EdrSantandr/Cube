@@ -25,12 +25,11 @@ public:
 
 	/*Ability system Interface*/
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
+
+	virtual void BeginPlay() override;
 	
 protected:
-	virtual void BeginPlay() override;
-
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 

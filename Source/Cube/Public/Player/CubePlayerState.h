@@ -3,9 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemInterface.h"
 #include "GameFramework/PlayerState.h"
 #include "CubePlayerState.generated.h"
 
+class UAttributeSet;
+class UAbilitySystemComponent;
 /**
  * 
  */

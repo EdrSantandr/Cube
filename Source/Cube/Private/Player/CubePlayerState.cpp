@@ -7,3 +7,4 @@ ACubePlayerState::ACubePlayerState()
 {
 	NetUpdateFrequency = 100.f;
 }
+

@@ -4,16 +4,16 @@
 #include "Character/CubeCharacterBase.h"
 
 #include "AbilitySystemComponent.h"
+#include "AbilitySystemComponent/CubeAbilitySystemComponent.h"
+#include "AbilitySystemComponent/CubeAttributeSet.h"
 
 ACubeCharacterBase::ACubeCharacterBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
-
-	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>("AbilitySystemComponent");
+	AbilitySystemComponent = CreateDefaultSubobject<UCubeAbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
-	
-	AttributeSet = CreateDefaultSubobject<UAttributeSet>("AttributeSet");
+	AttributeSet = CreateDefaultSubobject<UCubeAttributeSet>("AttributeSet");
 }
 
 void ACubeCharacterBase::AddMovementInput(FVector WorldDirection, float ScaleValue, bool bForce)
@@ -29,8 +29,8 @@ UAbilitySystemComponent* ACubeCharacterBase::GetAbilitySystemComponent() const
 void ACubeCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	check(AbilitySystemComponent);
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 }
+
 
 

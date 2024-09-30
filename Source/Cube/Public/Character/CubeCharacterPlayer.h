@@ -24,5 +24,4 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category="CubeCamera")
 	TObjectPtr<UCameraComponent> CameraComponent;
-	
 };
