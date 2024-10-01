@@ -101,11 +101,11 @@ void ACubeCharacterBase::ControlRotation(float const InDelta)
 		}
 		if (!FMath::IsNearlyZero(RotationDirection.Y))
 		{
-			DeltaRotation *= FVector(0.f, RotationDirection.Y * -1.f, 0.f);
+			DeltaRotation *= FVector(0.f, RotationDirection.Y , 0.f);
 			UE_LOG(LogTemp, Warning, TEXT("DELTA Y rotation [%s]"), *DeltaRotation.ToString());
 		}
 		
-		TotalRotation = FRotator(DeltaRotation.X, DeltaRotation.Y,0.f);
+		TotalRotation = FRotator(DeltaRotation.X, 0.f,DeltaRotation.Y);
 		UE_LOG(LogTemp, Warning, TEXT("rotation [%s]"), *TotalRotation.ToString());
 		//SetActorRotation(DeltaRotation.Rotation(), ETeleportType::None);
 		SetActorRelativeRotation(TotalRotation);
