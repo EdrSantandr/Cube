@@ -41,7 +41,7 @@ protected:
 	FTimerDelegate RotationDelegate;
 
 	UFUNCTION()
-	void FinishMovement(const FVector& InActorLocation);
+	void FinishMovement(const FVector& InActorLocation, const FRotator& InActorRotation);
 
 private:
 	bool bMeshRotation = false;

@@ -9,7 +9,7 @@ UCubeAttributeSet::UCubeAttributeSet()
 {
 	InitStamina(100.f);
 	InitMaxStamina(100.f);
-	InitMovementTime(2.f);
+	InitMovementTime(0.5f);
 }
 
 void UCubeAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
