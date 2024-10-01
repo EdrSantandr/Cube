@@ -58,6 +58,10 @@ void ACubeCharacterBase::Tick(float DeltaSeconds)
 	}
 }
 
+void ACubeCharacterBase::CameraMovement(const FVector& NewLocation)
+{
+}
+
 void ACubeCharacterBase::FinishMovement(const FVector& InActorLocation, const FRotator& InActorRotation)
 {
 	bMeshRotation = false;
@@ -66,8 +70,8 @@ void ACubeCharacterBase::FinishMovement(const FVector& InActorLocation, const FR
 	ElapsedTimeRotation = 0.f;
 	InteractionTime = 0.f;
 	InitialHeight = 0.f;
-	DrawDebugSphere(GetWorld(), InActorLocation, 15.f, 12, FColor::Green, false, 5.f);
 	SetActorLocation(InActorLocation);
+	CameraMovement(InActorLocation);
 	SetActorRelativeRotation(InActorRotation);
 	GetWorld()->GetTimerManager().ClearTimer(RotationTimerHandle);
 }
@@ -85,6 +89,7 @@ void ACubeCharacterBase::ControlTranslation()
 		DeltaTranslation = InitialActorLocation + DeltaTranslation;
 		
 		const FVector ActorDeltaLocation = FVector(DeltaTranslation.X, DeltaTranslation.Y, DeltaZ);
+		CameraMovement(ActorDeltaLocation);
 		SetActorLocation(ActorDeltaLocation);
 	}
 }

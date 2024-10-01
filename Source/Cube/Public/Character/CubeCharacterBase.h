@@ -30,6 +30,8 @@ public:
 
 	virtual void Tick(float DeltaSeconds) override;
 
+	virtual void CameraMovement(const FVector& NewLocation);
+
 protected:
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;

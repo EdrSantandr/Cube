@@ -26,4 +26,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category="CubeCamera")
 	TObjectPtr<UCameraComponent> CameraComponent;
+
+	virtual void CameraMovement(const FVector& NewLocation) override;
+
+private:
+	FVector InitialCameraPosition = FVector::ZeroVector;
 };
