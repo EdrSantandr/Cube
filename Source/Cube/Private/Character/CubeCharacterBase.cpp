@@ -22,17 +22,20 @@ void ACubeCharacterBase::AddMovementInput(FVector WorldDirection, float ScaleVal
 	Translation = WorldDirection * ScaleValue * DistanceToMove;
 	InitialActorLocation = GetActorLocation();
 	const FVector FinalLocation = InitialActorLocation + Translation;
-	if (const UCubeAttributeSet* CubeAttributeSet = Cast<UCubeAttributeSet>(AttributeSet))
+	if (CanMoveNextLocation(FinalLocation))
 	{
-		InteractionTime = CubeAttributeSet->MovementTime.GetCurrentValue();
-		bMeshRotation = true;
-		ElapsedTimeRotation = 0.f;
-		CalculateDiagonal();
-		FVector ConstantRotation = FVector(1.f,1.f,1.f) * 90.f;
-		ConstantRotation *= WorldDirection;
-		FRotator FinalRotation = FRotator(ConstantRotation.X, 0.f,ConstantRotation.Y);
-		RotationDelegate.BindUFunction(this,"FinishMovement", FinalLocation, FinalRotation);
-		GetWorld()->GetTimerManager().SetTimer(RotationTimerHandle, RotationDelegate, InteractionTime, false);
+		if (const UCubeAttributeSet* CubeAttributeSet = Cast<UCubeAttributeSet>(AttributeSet))
+		{
+			InteractionTime = CubeAttributeSet->MovementTime.GetCurrentValue();
+			bMeshRotation = true;
+			ElapsedTimeRotation = 0.f;
+			CalculateDiagonal();
+			FVector ConstantRotation = FVector(1.f,1.f,1.f) * 90.f;
+			ConstantRotation *= WorldDirection;
+			FRotator FinalRotation = FRotator(ConstantRotation.X, 0.f,ConstantRotation.Y);
+			RotationDelegate.BindUFunction(this,"FinishMovement", FinalLocation, FinalRotation);
+			GetWorld()->GetTimerManager().SetTimer(RotationTimerHandle, RotationDelegate, InteractionTime, false);
+		}	
 	}
 }
 
@@ -115,6 +118,17 @@ void ACubeCharacterBase::CalculateDiagonal()
 	SquareDiagonal = FMath::Sqrt(2.f)*BoxExtend.X;
 	SquareExtend = BoxExtend.X;
 	InitialHeight = 0.f;
+}
+
+bool ACubeCharacterBase::CanMoveNextLocation(const FVector& NextLocation) const
+{
+	FHitResult OutHit;
+	FCollisionQueryParams CollisionQueryParams;
+	CollisionQueryParams.AddIgnoredActor(this);
+	GetWorld()->LineTraceSingleByChannel(OutHit, GetActorLocation(), NextLocation, ECC_Pawn,CollisionQueryParams);
+	if (OutHit.bBlockingHit)
+		return false;
+	return true;	
 }
 
 

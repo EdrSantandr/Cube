@@ -65,4 +65,7 @@ private:
 
 	UFUNCTION()
 	void CalculateDiagonal();
+
+	UFUNCTION()
+	bool CanMoveNextLocation(const FVector& NextLocation) const;
 };
