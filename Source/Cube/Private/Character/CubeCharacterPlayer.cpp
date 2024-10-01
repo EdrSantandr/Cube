@@ -15,3 +15,9 @@ ACubeCharacterPlayer::ACubeCharacterPlayer()
 	CameraComponent->SetupAttachment(SpringArmComponent, USpringArmComponent::SocketName);
 	CameraComponent->bUsePawnControlRotation = false;
 }
+
+void ACubeCharacterPlayer::BeginPlay()
+{
+	Super::BeginPlay();
+	SpringArmComponent->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+}

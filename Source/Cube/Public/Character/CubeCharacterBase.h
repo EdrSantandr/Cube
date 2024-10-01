@@ -45,16 +45,21 @@ protected:
 
 private:
 	bool bMeshRotation = false;
-	FVector RotationDirection = FVector::ZeroVector;
+	FVector Translation = FVector::ZeroVector;
 	float ElapsedTimeRotation = 0.f;
 	float SquareDiagonal = 0.f;
 	float SquareExtend = 0.f;
 	float InteractionTime = 0.f;
 	float InitialHeight = 0.f;
 	FVector InitialActorLocation = FVector::ZeroVector;
+	FVector RotationDirection = FVector::ZeroVector;
+	FRotator TotalRotation = FRotator::ZeroRotator;
 	
 	UFUNCTION()
-	void ControlHeight(float InDelta);
+	void ControlTranslation();
+
+	UFUNCTION()
+	void ControlRotation(float const InDelta);
 
 	UFUNCTION()
 	void CalculateDiagonal();

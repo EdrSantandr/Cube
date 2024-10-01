@@ -18,15 +18,15 @@ ACubeCharacterBase::ACubeCharacterBase()
 
 void ACubeCharacterBase::AddMovementInput(FVector WorldDirection, float ScaleValue, bool bForce)
 {
-	RotationDirection = WorldDirection * ScaleValue * DistanceToMove;
+	RotationDirection = WorldDirection * ScaleValue;
+	Translation = WorldDirection * ScaleValue * DistanceToMove;
 	InitialActorLocation = GetActorLocation();
-	const FVector FinalLocation = InitialActorLocation + RotationDirection;
+	const FVector FinalLocation = InitialActorLocation + Translation;
 	if (const UCubeAttributeSet* CubeAttributeSet = Cast<UCubeAttributeSet>(AttributeSet))
 	{
 		InteractionTime = CubeAttributeSet->MovementTime.GetCurrentValue();
 		bMeshRotation = true;
 		ElapsedTimeRotation = 0.f;
-		//InitialHeight = GetMesh()->GetComponentLocation().Z;
 		CalculateDiagonal();
 		RotationDelegate.BindUFunction(this,"FinishMovement", FinalLocation);
 		GetWorld()->GetTimerManager().SetTimer(RotationTimerHandle, RotationDelegate, InteractionTime, false);
@@ -50,26 +50,30 @@ void ACubeCharacterBase::Tick(float DeltaSeconds)
 	if (bMeshRotation)
 	{
 		//Control Z height
-		ControlHeight(DeltaSeconds);
+		ElapsedTimeRotation += DeltaSeconds;
+		ControlTranslation();
 		//Control Rotation
+		ControlRotation(DeltaSeconds);
 	}
 }
 
 void ACubeCharacterBase::FinishMovement(const FVector& InActorLocation)
 {
+	//todo: attach camera and spring arm component
 	bMeshRotation = false;
-	RotationDirection = FVector::ZeroVector;
+	Translation = FVector::ZeroVector;
+	TotalRotation = FRotator::ZeroRotator;
 	ElapsedTimeRotation = 0.f;
 	InteractionTime = 0.f;
 	InitialHeight = 0.f;
+	
 	DrawDebugSphere(GetWorld(), InActorLocation, 15.f, 12, FColor::Green, false, 5.f);
 	SetActorLocation(InActorLocation);
 	GetWorld()->GetTimerManager().ClearTimer(RotationTimerHandle);
 }
 
-void ACubeCharacterBase::ControlHeight(float InDelta)
+void ACubeCharacterBase::ControlTranslation()
 {
-	ElapsedTimeRotation += InDelta;
 	if (ElapsedTimeRotation < InteractionTime)
 	{
 		float DeltaZ = ElapsedTimeRotation/InteractionTime * DistanceToMove - SquareExtend;
@@ -77,11 +81,34 @@ void ACubeCharacterBase::ControlHeight(float InDelta)
 		DeltaZ = FMath::Square(SquareDiagonal) - DeltaZ;
 		DeltaZ = FMath::Sqrt(DeltaZ) + InitialHeight;
 
-		FVector DeltaTraslation = ElapsedTimeRotation/InteractionTime * RotationDirection;
+		FVector DeltaTraslation = ElapsedTimeRotation/InteractionTime * Translation;
 		DeltaTraslation = InitialActorLocation + DeltaTraslation;
 		
 		const FVector ActorDeltaLocation = FVector(DeltaTraslation.X, DeltaTraslation.Y, DeltaZ);
 		SetActorLocation(ActorDeltaLocation);
+	}
+}
+
+void ACubeCharacterBase::ControlRotation(float const InDelta)
+{
+	if (ElapsedTimeRotation < InteractionTime)
+	{
+		FVector DeltaRotation = FVector(90.f, 90.f,0.f) * ElapsedTimeRotation/InteractionTime;
+		if (!FMath::IsNearlyZero(RotationDirection.X))
+		{
+			DeltaRotation *= FVector(RotationDirection.X * -1.f,0.f , 0.f);
+			UE_LOG(LogTemp, Warning, TEXT("DELTA X rotation [%s]"), *DeltaRotation.ToString());
+		}
+		if (!FMath::IsNearlyZero(RotationDirection.Y))
+		{
+			DeltaRotation *= FVector(0.f, RotationDirection.Y * -1.f, 0.f);
+			UE_LOG(LogTemp, Warning, TEXT("DELTA Y rotation [%s]"), *DeltaRotation.ToString());
+		}
+		
+		TotalRotation = FRotator(DeltaRotation.X, DeltaRotation.Y,0.f);
+		UE_LOG(LogTemp, Warning, TEXT("rotation [%s]"), *TotalRotation.ToString());
+		//SetActorRotation(DeltaRotation.Rotation(), ETeleportType::None);
+		SetActorRelativeRotation(TotalRotation);
 	}
 }
 

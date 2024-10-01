@@ -19,6 +19,8 @@ class CUBE_API ACubeCharacterPlayer : public ACubeCharacterBase
 public:
 	ACubeCharacterPlayer();
 
+	virtual void BeginPlay() override;
+
 	UPROPERTY(EditDefaultsOnly, Category="CubeCamera")
 	TObjectPtr<USpringArmComponent> SpringArmComponent;
 
