@@ -6,6 +6,10 @@
 #include "GameFramework/HUD.h"
 #include "CubeHUD.generated.h"
 
+class UAttributeSet;
+class UAbilitySystemComponent;
+struct FWidgetControllerParams;
+class UOverlayWidgetController;
 class UCubeUserWidget;
 /**
  * 
@@ -19,10 +23,18 @@ public:
 	UPROPERTY()
 	TObjectPtr<UCubeUserWidget> OverlayWidget;
 
-protected:
-	virtual void BeginPlay() override;
+	UOverlayWidgetController* GetOverlayWidgetController(const FWidgetControllerParams& WcParams);
+
+	void InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* Asc, UAttributeSet* AS);
+	
 private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UCubeUserWidget> OverlayWidgetClass;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UOverlayWidgetController> OverlayWidgetControllerClass;
+	
+	UPROPERTY()
+	TObjectPtr<UOverlayWidgetController> OverlayWidgetController;
 	
 };

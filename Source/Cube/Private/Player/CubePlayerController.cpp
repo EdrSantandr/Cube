@@ -15,8 +15,9 @@ void ACubePlayerController::BeginPlay()
 	Super::BeginPlay();
 	check(CubeContext);
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	check(Subsystem);
-	Subsystem->AddMappingContext(CubeContext, 0);
+	if (Subsystem)
+		Subsystem->AddMappingContext(CubeContext, 0);
+	
 	bShowMouseCursor = false;
 }
 

@@ -19,6 +19,8 @@ class CUBE_API ACubeCharacterPlayer : public ACubeCharacterBase
 public:
 	ACubeCharacterPlayer();
 
+	virtual void PossessedBy(AController* NewController) override;
+
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, Category="CubeCamera")
@@ -31,4 +33,5 @@ public:
 
 private:
 	FVector InitialCameraPosition = FVector::ZeroVector;
+	void InitActorInfo();
 };

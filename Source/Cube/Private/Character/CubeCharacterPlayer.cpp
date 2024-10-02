@@ -4,6 +4,9 @@
 #include "Character/CubeCharacterPlayer.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Player/CubePlayerController.h"
+#include "Player/CubePlayerState.h"
+#include "UI/HUD/CubeHUD.h"
 
 ACubeCharacterPlayer::ACubeCharacterPlayer()
 {
@@ -15,6 +18,12 @@ ACubeCharacterPlayer::ACubeCharacterPlayer()
 	CameraComponent->SetupAttachment(SpringArmComponent, USpringArmComponent::SocketName);
 	CameraComponent->bUsePawnControlRotation = false;
 	
+}
+
+void ACubeCharacterPlayer::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	InitActorInfo();
 }
 
 void ACubeCharacterPlayer::BeginPlay()
@@ -36,4 +45,18 @@ void ACubeCharacterPlayer::CameraMovement(const FVector& NewLocation)
 		CameraLocation.Z += NewLocation.Z;
 	*/
 	CameraComponent->SetWorldLocation(CameraLocation);
+}
+
+void ACubeCharacterPlayer::InitActorInfo()
+{
+	ACubePlayerState* CubePlayerState =GetPlayerState<ACubePlayerState>();
+	check(CubePlayerState);
+	
+	if (ACubePlayerController* CubePlayerController = Cast<ACubePlayerController>(GetController()))
+	{
+		if (ACubeHUD* CubeHUD = Cast<ACubeHUD>(CubePlayerController->GetHUD()))
+		{
+			CubeHUD->InitOverlay(CubePlayerController, CubePlayerState, AbilitySystemComponent, AttributeSet);
+		}
+	}
 }
