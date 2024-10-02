@@ -42,6 +42,8 @@ class CUBE_API UCubeWidgetController : public UObject
 public:
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetControllerParams(const FWidgetControllerParams& WcParams);
+
+	virtual void BroadcastInitialValues();
 	
 protected:
 	UPROPERTY(BlueprintReadOnly, Category="WidgetController")
