@@ -11,6 +11,7 @@ UOverlayWidgetController* ACubeHUD::GetOverlayWidgetController(const FWidgetCont
 	{
 		OverlayWidgetController = NewObject<UOverlayWidgetController>(this, OverlayWidgetControllerClass);
 		OverlayWidgetController->SetWidgetControllerParams(WcParams);
+		OverlayWidgetController->BindCallbackToDependencies();
 		return OverlayWidgetController;
 	}
 	return OverlayWidgetController;

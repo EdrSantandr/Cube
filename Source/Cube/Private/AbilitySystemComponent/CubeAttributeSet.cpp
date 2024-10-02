@@ -7,7 +7,7 @@
 
 UCubeAttributeSet::UCubeAttributeSet()
 {
-	InitStamina(100.f);
+	InitStamina(50.f);
 	InitMaxStamina(100.f);
 	InitMovementTime(0.5f);
 }

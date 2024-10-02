@@ -31,7 +31,8 @@ void ACubeEffectActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 	{
 		const UCubeAttributeSet* CubeAttributeSet = Cast<UCubeAttributeSet>(AscInterface->GetAbilitySystemComponent()->GetAttributeSet(UCubeAttributeSet::StaticClass()));
 		UCubeAttributeSet* MutableAttributeSet = const_cast<UCubeAttributeSet*>(CubeAttributeSet);
-		MutableAttributeSet->SetMovementTime(CubeAttributeSet->GetMovementTime() - 0.2f);
+		//MutableAttributeSet->SetMovementTime(CubeAttributeSet->GetMovementTime() - 0.2f);
+		MutableAttributeSet->SetStamina(CubeAttributeSet->GetStamina() + 25.f);
 		Destroy();
 	}
 }

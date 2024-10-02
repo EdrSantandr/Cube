@@ -14,3 +14,7 @@ void UCubeWidgetController::SetWidgetControllerParams(const FWidgetControllerPar
 void UCubeWidgetController::BroadcastInitialValues()
 {
 }
+
+void UCubeWidgetController::BindCallbackToDependencies()
+{
+}

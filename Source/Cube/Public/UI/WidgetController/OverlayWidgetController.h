@@ -17,10 +17,15 @@ class CUBE_API UOverlayWidgetController : public UCubeWidgetController
 
 public:
 	virtual void BroadcastInitialValues() override;
+	virtual void BindCallbackToDependencies() override;
 
 	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
 	FOnAttributeChangedSignature OnStaminaChangedDelegate;
 
 	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
 	FOnAttributeChangedSignature OnMaxStaminaChangedDelegate;
+
+protected:
+	void StaminaChanged(const FOnAttributeChangeData& Data) const;
+	void MaxStaminaChanged(const FOnAttributeChangeData& Data) const;
 };

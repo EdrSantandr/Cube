@@ -44,6 +44,7 @@ public:
 	void SetWidgetControllerParams(const FWidgetControllerParams& WcParams);
 
 	virtual void BroadcastInitialValues();
+	virtual void BindCallbackToDependencies();	
 	
 protected:
 	UPROPERTY(BlueprintReadOnly, Category="WidgetController")
