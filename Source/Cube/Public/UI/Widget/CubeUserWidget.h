@@ -6,6 +6,13 @@
 #include "Blueprint/UserWidget.h"
 #include "CubeUserWidget.generated.h"
 
+UENUM(BlueprintType)
+enum class EPlatformSupported : uint8
+{
+	Windows,
+	Android
+};
+
 /**
  * 
  */

@@ -25,6 +25,9 @@ public:
 	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
 	FOnAttributeChangedSignature OnMaxStaminaChangedDelegate;
 
+	UFUNCTION(BlueprintCallable, Category="ScreenSize")
+	FVector2D GetWindowScreenSize();
+
 protected:
 	void StaminaChanged(const FOnAttributeChangeData& Data) const;
 	void MaxStaminaChanged(const FOnAttributeChangeData& Data) const;

@@ -25,7 +25,11 @@ public:
 
 	UOverlayWidgetController* GetOverlayWidgetController(const FWidgetControllerParams& WcParams);
 
+	virtual void DrawHUD() override;	
+
 	void InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* Asc, UAttributeSet* AS);
+	
+	FVector2D HUDScreenSize() const;
 	
 private:
 	UPROPERTY(EditAnywhere)
@@ -36,5 +40,13 @@ private:
 	
 	UPROPERTY()
 	TObjectPtr<UOverlayWidgetController> OverlayWidgetController;
-	
+
+	UPROPERTY()
+	int32 ScreenHeight = 0;
+
+	UPROPERTY()
+	int32 ScreenWidth = 0;
+
+	UPROPERTY()
+	bool bSetScreenSize = false;
 };
