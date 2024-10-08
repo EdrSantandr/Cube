@@ -37,13 +37,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Effects")
 	EAppliedAbilityEffectType EffectType = EAppliedAbilityEffectType::Instant;
 	
-	UPROPERTY(EditAnywhere, Category="InstantEffect")
+	UPROPERTY(EditAnywhere, Category="Effects")
 	TSubclassOf<UGameplayEffect> InstantGameplayEffect;
 
-	UPROPERTY(EditAnywhere, Category="DurationEffect")
+	UPROPERTY(EditAnywhere, Category="Effects")
 	TSubclassOf<UGameplayEffect> DurationGameplayEffect;
 
-	UPROPERTY(EditAnywhere, Category="InfiniteEffect")
+	UPROPERTY(EditAnywhere, Category="Effects")
 	TSubclassOf<UGameplayEffect> InfiniteGameplayEffect;
 	
 	UFUNCTION(BlueprintCallable, Category="Effects")

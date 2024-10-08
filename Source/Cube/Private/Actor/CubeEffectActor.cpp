@@ -29,16 +29,18 @@ void ACubeEffectActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 	switch (EffectType)
 	{
 		case EAppliedAbilityEffectType::Instant:
-			ApplyEffectToTarget(OtherActor, InstantGameplayEffect);
-
+			ApplyEffectToTarget(OtherActor, InstantGameplayEffect);	
+			break;
 		case EAppliedAbilityEffectType::Duration:
-			ApplyEffectToTarget(OtherActor, DurationGameplayEffect);
-
+			ApplyEffectToTarget(OtherActor, DurationGameplayEffect);	
+			break;
 		case EAppliedAbilityEffectType::Infinite:
-			ApplyEffectToTarget(OtherActor, InfiniteGameplayEffect);
+			ApplyEffectToTarget(OtherActor, InfiniteGameplayEffect);	
+			break;
 		default:
-			return;
+			UE_LOG(LogTemp, Warning, TEXT("No effect applied"));		
 	}
+	Destroy();
 }
 
 void ACubeEffectActor::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
