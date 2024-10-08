@@ -2,9 +2,8 @@
 
 
 #include "Actor/CubeEffectActor.h"
-
-#include "AbilitySystemInterface.h"
-#include "AbilitySystemComponent/CubeAttributeSet.h"
+#include "AbilitySystemComponent.h"
+#include "AbilitySystemBlueprintLibrary.h"
 #include "Components/BoxComponent.h"
 
 ACubeEffectActor::ACubeEffectActor()
@@ -27,17 +26,35 @@ void ACubeEffectActor::BeginPlay()
 void ACubeEffectActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	UE_LOG(LogTemp, Warning, TEXT("BEGIN OVERLAP"));
-	if (IAbilitySystemInterface* AscInterface = Cast<IAbilitySystemInterface>(OtherActor))
+	switch (EffectType)
 	{
-		const UCubeAttributeSet* CubeAttributeSet = Cast<UCubeAttributeSet>(AscInterface->GetAbilitySystemComponent()->GetAttributeSet(UCubeAttributeSet::StaticClass()));
-		UCubeAttributeSet* MutableAttributeSet = const_cast<UCubeAttributeSet*>(CubeAttributeSet);
-		//MutableAttributeSet->SetMovementTime(CubeAttributeSet->GetMovementTime() - 0.2f);
-		MutableAttributeSet->SetStamina(CubeAttributeSet->GetStamina() + 25.f);
-		Destroy();
+		case EAppliedAbilityEffectType::Instant:
+			ApplyEffectToTarget(OtherActor, InstantGameplayEffect);
+
+		case EAppliedAbilityEffectType::Duration:
+			ApplyEffectToTarget(OtherActor, DurationGameplayEffect);
+
+		case EAppliedAbilityEffectType::Infinite:
+			ApplyEffectToTarget(OtherActor, InfiniteGameplayEffect);
+		default:
+			return;
 	}
 }
 
 void ACubeEffectActor::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	UE_LOG(LogTemp, Warning, TEXT("END OVERLAP"));
+}
+
+void ACubeEffectActor::ApplyEffectToTarget(AActor* Target, TSubclassOf<UGameplayEffect> GameplayEffectClass)
+{
+	if (UAbilitySystemComponent* TargetAsc = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Target))
+	{
+		check(GameplayEffectClass);
+		FGameplayEffectContextHandle EffectContextHandle = TargetAsc->MakeEffectContext();
+		EffectContextHandle.AddSourceObject(this);
+		//todo: level should be set
+		FGameplayEffectSpecHandle EffectSpecHandle = TargetAsc->MakeOutgoingSpec(GameplayEffectClass, 1.f, EffectContextHandle);
+		TargetAsc->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+	}
 }
