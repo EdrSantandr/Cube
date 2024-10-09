@@ -29,7 +29,7 @@ void ACubeEffectActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 	switch (EffectType)
 	{
 		case EAppliedAbilityEffectType::Instant:
-			ApplyEffectToTarget(OtherActor, InstantGameplayEffect);	
+			ApplyEffectToTarget(OtherActor, InstantGameplayEffect);
 			break;
 		case EAppliedAbilityEffectType::Duration:
 			ApplyEffectToTarget(OtherActor, DurationGameplayEffect);	
@@ -46,6 +46,30 @@ void ACubeEffectActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 void ACubeEffectActor::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	UE_LOG(LogTemp, Warning, TEXT("END OVERLAP"));
+}
+
+void ACubeEffectActor::OnActorBeginOverlap(AActor* TargetActor)
+{
+	if (InstantApplicationPolicy == EEffectCustomApplicationPolicy::ApplyOnBeginOverlap)
+	{
+		ApplyEffectToTarget(TargetActor, InstantGameplayEffect);
+	}
+	if (DurationApplicationPolicy == EEffectCustomApplicationPolicy::ApplyOnBeginOverlap)
+	{
+		ApplyEffectToTarget(TargetActor, DurationGameplayEffect);
+	}
+}
+
+void ACubeEffectActor::OnActorEndOverlap(AActor* TargetActor)
+{
+	if (InstantApplicationPolicy == EEffectCustomApplicationPolicy::ApplyOnEndOverlap)
+	{
+		ApplyEffectToTarget(TargetActor, InstantGameplayEffect);
+	}
+	if (DurationApplicationPolicy == EEffectCustomApplicationPolicy::ApplyOnEndOverlap)
+	{
+		ApplyEffectToTarget(TargetActor, DurationGameplayEffect);
+	}
 }
 
 void ACubeEffectActor::ApplyEffectToTarget(AActor* Target, TSubclassOf<UGameplayEffect> GameplayEffectClass)
