@@ -26,26 +26,13 @@ void ACubeEffectActor::BeginPlay()
 void ACubeEffectActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	UE_LOG(LogTemp, Warning, TEXT("BEGIN OVERLAP"));
-	switch (EffectType)
-	{
-		case EAppliedAbilityEffectType::Instant:
-			ApplyEffectToTarget(OtherActor, InstantGameplayEffect);
-			break;
-		case EAppliedAbilityEffectType::Duration:
-			ApplyEffectToTarget(OtherActor, DurationGameplayEffect);	
-			break;
-		case EAppliedAbilityEffectType::Infinite:
-			ApplyEffectToTarget(OtherActor, InfiniteGameplayEffect);	
-			break;
-		default:
-			UE_LOG(LogTemp, Warning, TEXT("No effect applied"));		
-	}
-	Destroy();
+	OnActorBeginOverlap(OtherActor);
 }
 
 void ACubeEffectActor::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	UE_LOG(LogTemp, Warning, TEXT("END OVERLAP"));
+	OnActorEndOverlap(OtherActor);
 }
 
 void ACubeEffectActor::OnActorBeginOverlap(AActor* TargetActor)
@@ -57,6 +44,10 @@ void ACubeEffectActor::OnActorBeginOverlap(AActor* TargetActor)
 	if (DurationApplicationPolicy == EEffectCustomApplicationPolicy::ApplyOnBeginOverlap)
 	{
 		ApplyEffectToTarget(TargetActor, DurationGameplayEffect);
+	}
+	if (InfiniteApplicationPolicy == EEffectCustomApplicationPolicy::ApplyOnBeginOverlap)
+	{
+		ApplyEffectToTarget(TargetActor, InfiniteGameplayEffect);
 	}
 }
 
@@ -70,6 +61,29 @@ void ACubeEffectActor::OnActorEndOverlap(AActor* TargetActor)
 	{
 		ApplyEffectToTarget(TargetActor, DurationGameplayEffect);
 	}
+	if (InfiniteApplicationPolicy == EEffectCustomApplicationPolicy::ApplyOnEndOverlap)
+	{
+		ApplyEffectToTarget(TargetActor, InfiniteGameplayEffect);
+	}
+	if (InfiniteRemovalPolicy == EEffectCustomRemovalPolicy::RemoveOnEndOverlap)
+	{
+		if (UAbilitySystemComponent* TargetAsc = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor))
+		{
+			TArray<FActiveGameplayEffectHandle> HandlesToRemove;
+			for (TTuple<FActiveGameplayEffectHandle, UAbilitySystemComponent*> HandlePair : ActiveEffectHandles)
+			{
+				if (TargetAsc == HandlePair.Value)
+				{
+					TargetAsc->RemoveActiveGameplayEffect(HandlePair.Key, 1);
+					HandlesToRemove.Add(HandlePair.Key);
+				}
+			}
+			for(FActiveGameplayEffectHandle& Handle : HandlesToRemove)
+			{
+				ActiveEffectHandles.FindAndRemoveChecked(Handle);
+			}
+		}
+	}
 }
 
 void ACubeEffectActor::ApplyEffectToTarget(AActor* Target, TSubclassOf<UGameplayEffect> GameplayEffectClass)
@@ -80,7 +94,13 @@ void ACubeEffectActor::ApplyEffectToTarget(AActor* Target, TSubclassOf<UGameplay
 		FGameplayEffectContextHandle EffectContextHandle = TargetAsc->MakeEffectContext();
 		EffectContextHandle.AddSourceObject(this);
 		//todo: level should be set
-		FGameplayEffectSpecHandle EffectSpecHandle = TargetAsc->MakeOutgoingSpec(GameplayEffectClass, 1.f, EffectContextHandle);
-		TargetAsc->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+		const FGameplayEffectSpecHandle EffectSpecHandle = TargetAsc->MakeOutgoingSpec(GameplayEffectClass, 1.f, EffectContextHandle);
+		const FActiveGameplayEffectHandle ActiveGameplayEffectHandle = TargetAsc->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+
+		const bool bIsInfinite = EffectSpecHandle.Data.Get()->Def.Get()->DurationPolicy == EGameplayEffectDurationType::Infinite;
+		if (bIsInfinite && InfiniteRemovalPolicy == EEffectCustomRemovalPolicy::RemoveOnEndOverlap)
+		{
+			ActiveEffectHandles.Add(ActiveGameplayEffectHandle, TargetAsc);
+		}	
 	}
 }

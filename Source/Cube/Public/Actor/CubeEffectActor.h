@@ -4,18 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "GameplayEffectTypes.h"
 #include "CubeEffectActor.generated.h"
 
+class UAbilitySystemComponent;
 class UGameplayEffect;
 class UBoxComponent;
-
-UENUM()
-enum class EAppliedAbilityEffectType : uint8
-{
-	Instant,
-	Duration,
-	Infinite
-};
 
 UENUM(BlueprintType)
 enum class EEffectCustomRemovalPolicy : uint8
@@ -58,9 +52,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Effects")
 	bool bRemoveOnEffectRemoval = false;
 	
-	UPROPERTY(EditDefaultsOnly, Category="Effects")
-	EAppliedAbilityEffectType EffectType = EAppliedAbilityEffectType::Instant;
-	
 	UPROPERTY(EditAnywhere, Category="Effects")
 	TSubclassOf<UGameplayEffect> InstantGameplayEffect;
 
@@ -85,6 +76,8 @@ protected:
 	UFUNCTION(BlueprintCallable, Category="Effects")
 	void ApplyEffectToTarget(AActor* Target, TSubclassOf<UGameplayEffect> GameplayEffectClass);
 
+	TMap<FActiveGameplayEffectHandle, UAbilitySystemComponent*> ActiveEffectHandles;
+	
 private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UBoxComponent> BoxComponent;
