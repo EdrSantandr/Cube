@@ -50,28 +50,31 @@ protected:
 	void OnActorEndOverlap(AActor* TargetActor);
 
 	UPROPERTY(EditDefaultsOnly, Category="Effects")
-	bool bRemoveOnEffectRemoval = false;
+	bool bRemoveActorOnEndOverlap = false;
 	
-	UPROPERTY(EditAnywhere, Category="Effects")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
 	TSubclassOf<UGameplayEffect> InstantGameplayEffect;
 
-	UPROPERTY(EditAnywhere, Category="Effects")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
 	EEffectCustomApplicationPolicy InstantApplicationPolicy = EEffectCustomApplicationPolicy::DoNotApply;
 
-	UPROPERTY(EditAnywhere, Category="Effects")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
 	TSubclassOf<UGameplayEffect> DurationGameplayEffect;
 
-	UPROPERTY(EditAnywhere, Category="Effects")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
 	EEffectCustomApplicationPolicy DurationApplicationPolicy = EEffectCustomApplicationPolicy::DoNotApply;
 
-	UPROPERTY(EditAnywhere, Category="Effects")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
 	TSubclassOf<UGameplayEffect> InfiniteGameplayEffect;
 
-	UPROPERTY(EditAnywhere, Category="Effects")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
 	EEffectCustomApplicationPolicy InfiniteApplicationPolicy = EEffectCustomApplicationPolicy::DoNotApply;
 
-	UPROPERTY(EditAnywhere, Category="Effects")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
 	EEffectCustomRemovalPolicy InfiniteRemovalPolicy = EEffectCustomRemovalPolicy::RemoveOnEndOverlap;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
+	float ActorLevel = 1.f;
 	
 	UFUNCTION(BlueprintCallable, Category="Effects")
 	void ApplyEffectToTarget(AActor* Target, TSubclassOf<UGameplayEffect> GameplayEffectClass);

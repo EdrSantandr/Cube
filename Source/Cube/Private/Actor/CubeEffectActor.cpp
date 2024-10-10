@@ -84,6 +84,10 @@ void ACubeEffectActor::OnActorEndOverlap(AActor* TargetActor)
 			}
 		}
 	}
+	if (bRemoveActorOnEndOverlap)
+	{
+		Destroy();
+	}
 }
 
 void ACubeEffectActor::ApplyEffectToTarget(AActor* Target, TSubclassOf<UGameplayEffect> GameplayEffectClass)
@@ -93,8 +97,7 @@ void ACubeEffectActor::ApplyEffectToTarget(AActor* Target, TSubclassOf<UGameplay
 		check(GameplayEffectClass);
 		FGameplayEffectContextHandle EffectContextHandle = TargetAsc->MakeEffectContext();
 		EffectContextHandle.AddSourceObject(this);
-		//todo: level should be set
-		const FGameplayEffectSpecHandle EffectSpecHandle = TargetAsc->MakeOutgoingSpec(GameplayEffectClass, 1.f, EffectContextHandle);
+		const FGameplayEffectSpecHandle EffectSpecHandle = TargetAsc->MakeOutgoingSpec(GameplayEffectClass, ActorLevel, EffectContextHandle);
 		const FActiveGameplayEffectHandle ActiveGameplayEffectHandle = TargetAsc->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
 
 		const bool bIsInfinite = EffectSpecHandle.Data.Get()->Def.Get()->DurationPolicy == EGameplayEffectDurationType::Infinite;
