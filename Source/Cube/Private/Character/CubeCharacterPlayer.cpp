@@ -47,7 +47,7 @@ void ACubeCharacterPlayer::CameraMovement(const FVector& NewLocation)
 	CameraComponent->SetWorldLocation(CameraLocation);
 }
 
-void ACubeCharacterPlayer::InitActorInfo()
+void ACubeCharacterPlayer::InitActorInfo() const
 {
 	ACubePlayerState* CubePlayerState =GetPlayerState<ACubePlayerState>();
 	check(CubePlayerState);

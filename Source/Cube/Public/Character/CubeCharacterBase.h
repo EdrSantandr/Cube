@@ -45,6 +45,9 @@ protected:
 	UFUNCTION()
 	void FinishMovement(const FVector& InActorLocation, const FRotator& InActorRotation);
 
+	UFUNCTION()
+	void InitAbilityActorInfo();
+
 private:
 	bool bMeshRotation = false;
 	FVector Translation = FVector::ZeroVector;

@@ -47,7 +47,7 @@ UAbilitySystemComponent* ACubeCharacterBase::GetAbilitySystemComponent() const
 void ACubeCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	InitAbilityActorInfo();
 }
 
 void ACubeCharacterBase::Tick(float DeltaSeconds)
@@ -77,6 +77,12 @@ void ACubeCharacterBase::FinishMovement(const FVector& InActorLocation, const FR
 	CameraMovement(InActorLocation);
 	SetActorRelativeRotation(InActorRotation);
 	GetWorld()->GetTimerManager().ClearTimer(RotationTimerHandle);
+}
+
+void ACubeCharacterBase::InitAbilityActorInfo()
+{
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	Cast<UCubeAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 }
 
 void ACubeCharacterBase::ControlTranslation()

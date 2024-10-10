@@ -33,5 +33,7 @@ public:
 
 private:
 	FVector InitialCameraPosition = FVector::ZeroVector;
-	void InitActorInfo();
+
+protected:
+	void InitActorInfo() const;
 };
