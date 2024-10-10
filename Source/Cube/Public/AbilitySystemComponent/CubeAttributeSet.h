@@ -23,7 +23,8 @@ class CUBE_API UCubeAttributeSet : public UAttributeSet
 public:
 	UCubeAttributeSet();
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+	
 	/*Current stamina you will use for each special movement*/
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Stamina, Category = "MovementAttributes")
 	FGameplayAttributeData Stamina;
