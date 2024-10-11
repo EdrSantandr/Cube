@@ -12,9 +12,5 @@ void UCubeAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* Ability
 {
 	FGameplayTagContainer TagContainer;
 	EffectSpec.GetAllAssetTags(TagContainer);
-	for (const FGameplayTag& Tag : TagContainer)
-	{
-		//todo: broadcast tag to widget controller
-		UE_LOG(LogTemp, Warning, TEXT("TAG: [%s]"), *Tag.ToString());
-	}
+	EffectAssetTagsDelegate.Broadcast(TagContainer);
 }
