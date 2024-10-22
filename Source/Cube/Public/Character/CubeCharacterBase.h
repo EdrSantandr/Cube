@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "CubeCharacterBase.generated.h"
 
+class UGameplayEffect;
 class UAttributeSet;
 class UAbilitySystemComponent;
 
@@ -33,6 +34,12 @@ public:
 	virtual void CameraMovement(const FVector& NewLocation);
 
 protected:
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Attributes")
+	TSubclassOf<UGameplayEffect> DefaultMovementAttributes;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Attributes")
+	TSubclassOf<UGameplayEffect> SecondaryMovementAttributes;
+	
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
@@ -49,6 +56,12 @@ protected:
 	void InitAbilityActorInfo();
 
 private:
+	UFUNCTION()
+	void SetupAttributes() const;
+
+	UFUNCTION()
+	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& InGameplayEffectClass, float InLevel = 1.f) const;
+	
 	bool bMeshRotation = false;
 	FVector Translation = FVector::ZeroVector;
 	float ElapsedTimeRotation = 0.f;

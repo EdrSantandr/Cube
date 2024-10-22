@@ -11,9 +11,6 @@
 
 UCubeAttributeSet::UCubeAttributeSet()
 {
-	InitStamina(50.f);
-	InitMaxStamina(100.f);
-	InitMovementTime(0.5f);
 }
 
 void UCubeAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -22,6 +19,7 @@ void UCubeAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	DOREPLIFETIME_CONDITION_NOTIFY(UCubeAttributeSet, Stamina, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UCubeAttributeSet, MaxStamina, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UCubeAttributeSet, MovementTime, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UCubeAttributeSet, JumpTime, COND_None, REPNOTIFY_Always);
 }
 
 void UCubeAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -92,5 +90,10 @@ void UCubeAttributeSet::OnRep_MaxStamina(const FGameplayAttributeData& OldMaxSta
 void UCubeAttributeSet::OnRep_MovementTime(const FGameplayAttributeData& OldMovementTime) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UCubeAttributeSet, MovementTime, OldMovementTime);
+}
+
+void UCubeAttributeSet::OnRep_JumpTime(const FGameplayAttributeData& OldJumpTime) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UCubeAttributeSet, JumpTime, OldJumpTime);
 }
 

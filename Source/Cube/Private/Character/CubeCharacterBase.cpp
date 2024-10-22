@@ -83,6 +83,22 @@ void ACubeCharacterBase::InitAbilityActorInfo()
 {
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<UCubeAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
+	SetupAttributes();
+}
+
+void ACubeCharacterBase::SetupAttributes() const
+{
+	ApplyEffectToSelf(DefaultMovementAttributes);
+	ApplyEffectToSelf(SecondaryMovementAttributes);
+}
+
+void ACubeCharacterBase::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& InGameplayEffectClass, const float InLevel) const
+{
+	check(IsValid(GetAbilitySystemComponent()));
+	check(InGameplayEffectClass);
+	const FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
+	const FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(InGameplayEffectClass, InLevel, ContextHandle);
+	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), GetAbilitySystemComponent());
 }
 
 void ACubeCharacterBase::ControlTranslation()
