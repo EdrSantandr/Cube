@@ -47,6 +47,9 @@ struct FEffectProperties
 	ACharacter* TargetCharacter = nullptr;
 };
 
+template <class T>
+using TStaticFuncPtr = typename TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy>::FFuncPtr;
+
 /**
  * 
  */
@@ -54,12 +57,16 @@ UCLASS()
 class CUBE_API UCubeAttributeSet : public UAttributeSet
 {
 	GENERATED_BODY()
+
 public:
 	UCubeAttributeSet();
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
+	TMap<FGameplayTag, TStaticFuncPtr<FGameplayAttribute()>> TagsToAttributes;
+
+	
 	//////////////////// SECONDARY MOVEMENT ATTRIBUTES /////////////////////////
 	/**/
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_JumpTime, Category = "SecondaryMovementAttributes")

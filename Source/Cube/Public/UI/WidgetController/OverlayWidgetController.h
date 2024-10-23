@@ -6,8 +6,10 @@
 #include "UI/WidgetController/CubeWidgetController.h"
 #include "OverlayWidgetController.generated.h"
 
+class UAttributeInformation;
+struct FUAttributeInformation;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewValue);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAttributeInfoSignature, const FUAttributeInformation&, Information);
 /**
  * 
  */
@@ -32,4 +34,11 @@ public:
 protected:
 	void StaminaChanged(const FOnAttributeChangeData& Data) const;
 	void MaxStaminaChanged(const FOnAttributeChangeData& Data) const;
+
+	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
+	FAttributeInfoSignature AttributeInfoDelegate;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UAttributeInformation> AttributeInformation;
+	
 };

@@ -3,8 +3,10 @@
 
 #include "UI/WidgetController/OverlayWidgetController.h"
 
+#include "CubeGameplayTags.h"
 #include "AbilitySystemComponent/CubeAbilitySystemComponent.h"
 #include "AbilitySystemComponent/CubeAttributeSet.h"
+#include "AbilitySystemComponent/Data/AttributeInformation.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/HUD/CubeHUD.h"
 
@@ -13,6 +15,15 @@ void UOverlayWidgetController::BroadcastInitialValues()
 	const UCubeAttributeSet* CubeAttributeSet = CastChecked<UCubeAttributeSet>(AttributeSet);
 	OnStaminaChangedDelegate.Broadcast(CubeAttributeSet->GetStamina());
 	OnMaxStaminaChangedDelegate.Broadcast(CubeAttributeSet->GetMaxStamina());
+
+	check(AttributeInformation);
+
+	for (auto& Pair : CubeAttributeSet->TagsToAttributes)
+	{
+		FUAttributeInformation Info = AttributeInformation->FindAttributeInfoByTag(Pair.Key);
+		Info.AttributeValue = Pair.Value().GetNumericValue(CubeAttributeSet);
+		AttributeInfoDelegate.Broadcast(Info);
+	}
 }
 
 void UOverlayWidgetController::BindCallbackToDependencies()

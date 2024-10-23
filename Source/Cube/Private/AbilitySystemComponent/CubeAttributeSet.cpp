@@ -4,6 +4,7 @@
 #include "AbilitySystemComponent/CubeAttributeSet.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "CubeGameplayTags.h"
 #include "GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
 #include "Net/UnrealNetwork.h"
@@ -11,6 +12,12 @@
 
 UCubeAttributeSet::UCubeAttributeSet()
 {
+	const FCubeGameplayTags& GameplayTags = FCubeGameplayTags::Get();
+
+	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Stamina, GetStaminaAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Primary_MaxStamina, GetMaxStaminaAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Primary_MovementTime, GetMovementTimeAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_JumpTime, GetJumpTimeAttribute);
 }
 
 void UCubeAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
