@@ -19,6 +19,10 @@ public:
 	void AbilityActorInfoSet();
 
 	FEffectAssetTagsSignature EffectAssetTagsDelegate;
+
+	UFUNCTION()
+	void SetupAbilities(const TArray<TSubclassOf<UGameplayAbility>>& InAbilities, const float Level = 1.f);
+	
 protected:
 	void EffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveGameplayEffectHandle);
 };

@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "CubeCharacterBase.generated.h"
 
+class UGameplayAbility;
 class UGameplayEffect;
 class UAttributeSet;
 class UAbilitySystemComponent;
@@ -55,6 +56,9 @@ protected:
 	UFUNCTION()
 	void InitAbilityActorInfo();
 
+	UFUNCTION()
+	void AddCharacterAbilities() const;
+
 private:
 	UFUNCTION()
 	void SetupAttributes() const;
@@ -84,4 +88,7 @@ private:
 
 	UFUNCTION()
 	bool CanMoveNextLocation(const FVector& NextLocation) const;
+
+	UPROPERTY(EditAnywhere, Category="Abilities")
+	TArray<TSubclassOf<UGameplayAbility>> InitialAbilities;
 };

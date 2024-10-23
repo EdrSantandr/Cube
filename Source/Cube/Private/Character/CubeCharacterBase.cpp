@@ -84,6 +84,16 @@ void ACubeCharacterBase::InitAbilityActorInfo()
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<UCubeAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 	SetupAttributes();
+	AddCharacterAbilities();
+}
+
+void ACubeCharacterBase::AddCharacterAbilities() const
+{
+	if (!HasAuthority()) return;
+	if (UCubeAbilitySystemComponent* CubeAsc = Cast<UCubeAbilitySystemComponent>(GetAbilitySystemComponent()))
+	{
+		CubeAsc->SetupAbilities(InitialAbilities);	
+	}
 }
 
 void ACubeCharacterBase::SetupAttributes() const
