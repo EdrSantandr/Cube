@@ -40,5 +40,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UAttributeInformation> AttributeInformation;
+
+private:
+	UFUNCTION()
+	void BroadcastAttributeInformation(const FGameplayTag& InAttributeTag, const FGameplayAttribute& InAttribute) const;
 	
 };

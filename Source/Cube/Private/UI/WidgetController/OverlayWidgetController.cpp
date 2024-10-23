@@ -20,17 +20,17 @@ void UOverlayWidgetController::BroadcastInitialValues()
 
 	for (auto& Pair : CubeAttributeSet->TagsToAttributes)
 	{
-		FUAttributeInformation Info = AttributeInformation->FindAttributeInfoByTag(Pair.Key);
-		Info.AttributeValue = Pair.Value().GetNumericValue(CubeAttributeSet);
-		AttributeInfoDelegate.Broadcast(Info);
+		BroadcastAttributeInformation(Pair.Key, Pair.Value());
 	}
 }
 
 void UOverlayWidgetController::BindCallbackToDependencies()
 {
 	const UCubeAttributeSet* CubeAttributeSet = CastChecked<UCubeAttributeSet>(AttributeSet);
+	
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(CubeAttributeSet->GetStaminaAttribute()).AddUObject(this, &UOverlayWidgetController::StaminaChanged);
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(CubeAttributeSet->GetMaxStaminaAttribute()).AddUObject(this, &UOverlayWidgetController::MaxStaminaChanged);
+	
 	Cast<UCubeAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTagsDelegate.AddLambda(
 		[](const FGameplayTagContainer& AssetTags)
 		{
@@ -39,6 +39,17 @@ void UOverlayWidgetController::BindCallbackToDependencies()
 				UE_LOG(LogTemp, Warning, TEXT("TAG: [%s]"), *Tag.ToString());
 			}
 		});
+	
+	check(AttributeInformation);
+	for (auto& Pair : CubeAttributeSet->TagsToAttributes)
+	{
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Pair.Value()).AddLambda(
+			[this, Pair, CubeAttributeSet](const FOnAttributeChangeData& Data)
+			{
+				BroadcastAttributeInformation(Pair.Key, Pair.Value());
+			}
+		);
+	}
 }
 
 FVector2D UOverlayWidgetController::GetWindowScreenSize()
@@ -58,4 +69,11 @@ void UOverlayWidgetController::StaminaChanged(const FOnAttributeChangeData& Data
 void UOverlayWidgetController::MaxStaminaChanged(const FOnAttributeChangeData& Data) const
 {
 	OnMaxStaminaChangedDelegate.Broadcast(Data.NewValue);
+}
+
+void UOverlayWidgetController::BroadcastAttributeInformation(const FGameplayTag& InAttributeTag, const FGameplayAttribute& InAttribute) const
+{
+	FUAttributeInformation Info = AttributeInformation->FindAttributeInfoByTag(InAttributeTag);
+	Info.AttributeValue = InAttribute.GetNumericValue(AttributeSet);
+	AttributeInfoDelegate.Broadcast(Info);
 }
