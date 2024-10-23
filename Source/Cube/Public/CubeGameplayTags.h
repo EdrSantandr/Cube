@@ -15,10 +15,10 @@ public:
 	static const FCubeGameplayTags& Get() { return CubeGameplayTags;}
 	static void InitializeGameplayTags();
 
-	// Attributes
-	FGameplayTag Attributes_MovementTime;
-	FGameplayTag Attributes_Stamina;
-	FGameplayTag Attributes_MaxStamina;
+	// Primary Attributes
+	FGameplayTag Attributes_Primary_MovementTime;
+	FGameplayTag Attributes_Primary_Stamina;
+	FGameplayTag Attributes_Primary_MaxStamina;
 
 	// Secondary Attributes
 	FGameplayTag Attributes_Secondary_JumpTime;

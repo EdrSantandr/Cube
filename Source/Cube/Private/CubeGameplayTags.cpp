@@ -8,17 +8,17 @@ FCubeGameplayTags FCubeGameplayTags::CubeGameplayTags;
 
 void FCubeGameplayTags::InitializeGameplayTags()
 {
-	/************************************ ATTRIBUTES ***********************/ 
-	CubeGameplayTags.Attributes_MovementTime = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Attributes.MovementTime"),
+	/************************************ PRIMARY ATTRIBUTES ***********************/ 
+	CubeGameplayTags.Attributes_Primary_MovementTime = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attributes.Primary.MovementTime"),
 		FString("movement time from character"));
 
-	CubeGameplayTags.Attributes_Stamina = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Attributes.Stamina"),
+	CubeGameplayTags.Attributes_Primary_Stamina = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attributes.Primary.Stamina"),
 		FString("stamina used by the character"));
 
-	CubeGameplayTags.Attributes_MaxStamina = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Attributes.MaxStamina"),
+	CubeGameplayTags.Attributes_Primary_MaxStamina = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attributes.Primary.MaxStamina"),
 		FString("max stamina allowed for the character"));
 
 	/************************************ SECONDARY ATTRIBUTES ***********************/
