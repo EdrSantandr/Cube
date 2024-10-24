@@ -3,8 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "GameFramework/PlayerController.h"
 #include "CubePlayerController.generated.h"
+class UCubeInputConfig;
 struct FInputActionValue;
 class UInputAction;
 class UInputMappingContext;
@@ -27,8 +29,12 @@ private:
 	UPROPERTY(EditAnywhere, Category="CubeInput")
 	TObjectPtr<UInputMappingContext> CubeContext;
 
-	UPROPERTY(EditAnywhere, Category="CubeInput")
-	TObjectPtr<UInputAction> MoveAction;
-
 	void Move(const FInputActionValue& InputActionValue);
+
+	void AbilityInputTagPressed(FGameplayTag InputTag);
+	void AbilityInputTagReleased(FGameplayTag InputTag);
+	void AbilityInputTagHeld(FGameplayTag InputTag);
+	
+	UPROPERTY(EditDefaultsOnly, Category="CubeInput")
+	TObjectPtr<UCubeInputConfig> CubeInputConfig;
 };

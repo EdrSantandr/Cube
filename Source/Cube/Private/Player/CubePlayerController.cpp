@@ -3,7 +3,7 @@
 
 #include "Player/CubePlayerController.h"
 #include "EnhancedInputSubsystems.h"
-#include "EnhancedInputComponent.h"
+#include "Input/CubeInputComponent.h"
 
 ACubePlayerController::ACubePlayerController()
 {
@@ -24,8 +24,8 @@ void ACubePlayerController::BeginPlay()
 void ACubePlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
-	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
-	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ACubePlayerController::Move);
+	UCubeInputComponent* CubeInputComponent = CastChecked<UCubeInputComponent>(InputComponent);
+	CubeInputComponent->BindAbilityActions(CubeInputConfig,this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
 }
 
 void ACubePlayerController::Move(const FInputActionValue& InputActionValue)
@@ -45,4 +45,19 @@ void ACubePlayerController::Move(const FInputActionValue& InputActionValue)
 		if (!FMath::IsNearlyZero(InputAxisVector.X))
 			ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X, true);
 	}
+}
+
+void ACubePlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
+{
+	UE_LOG(LogTemp, Warning, TEXT("PRESSED: [%s]"), *InputTag.ToString());
+}
+
+void ACubePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
+{
+	UE_LOG(LogTemp, Warning, TEXT("released: [%s]"), *InputTag.ToString());
+}
+
+void ACubePlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
+{
+	UE_LOG(LogTemp, Warning, TEXT("held: [%s]"), *InputTag.ToString());
 }
