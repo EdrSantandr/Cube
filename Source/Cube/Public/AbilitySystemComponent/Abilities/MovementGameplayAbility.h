@@ -13,5 +13,8 @@ UCLASS()
 class CUBE_API UMovementGameplayAbility : public UCubeGameplayAbility
 {
 	GENERATED_BODY()
-	
+
+public:
+	UFUNCTION(BlueprintCallable, Category="PawnMovement")
+	void MovePawn(const FVector Direction, const float Scale);
 };

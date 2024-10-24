@@ -32,8 +32,13 @@ private:
 
 	void Move(const FInputActionValue& InputActionValue);
 
+	UFUNCTION(BlueprintCallable, Category="CubeInput")
 	void AbilityInputTagPressed(FGameplayTag InputTag);
+
+	UFUNCTION(BlueprintCallable, Category="CubeInput")
 	void AbilityInputTagReleased(FGameplayTag InputTag);
+
+	UFUNCTION(BlueprintCallable, Category="CubeInput")
 	void AbilityInputTagHeld(FGameplayTag InputTag);
 	
 	UPROPERTY(EditDefaultsOnly, Category="CubeInput")

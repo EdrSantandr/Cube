@@ -52,19 +52,21 @@ void ACubePlayerController::Move(const FInputActionValue& InputActionValue)
 
 void ACubePlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
+	//if (GetAsc() == nullptr) return;
 	if (GetAsc() == nullptr) return;
+	if (GetAsc()) GetAsc()->AbilityInputTagPressed(InputTag);
 }
 
 void ACubePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
 	if (GetAsc() == nullptr) return;
-	GetAsc()->AbilityInputTagReleased(InputTag);
+	if (GetAsc()) GetAsc()->AbilityInputTagReleased(InputTag);
 }
 
 void ACubePlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
 	if (GetAsc() == nullptr) return;
-	GetAsc()->AbilityInputTagHeld(InputTag);
+	if (GetAsc()) GetAsc()->AbilityInputTagHeld(InputTag);
 }
 
 UCubeAbilitySystemComponent* ACubePlayerController::GetAsc()

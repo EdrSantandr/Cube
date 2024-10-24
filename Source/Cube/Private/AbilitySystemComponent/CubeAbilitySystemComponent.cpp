@@ -23,31 +23,51 @@ void UCubeAbilitySystemComponent::SetupAbilities(const TArray<TSubclassOf<UGamep
 	}
 }
 
-void UCubeAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
+void UCubeAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& InputTag)
 {
-	if (!InputTag.IsValid()) return;
-	for(FGameplayAbilitySpec& AbilitySpec: GetActivatableAbilities())
+	if(!InputTag.IsValid()) return;
+	FScopedAbilityListLock ActiveScopeLock(*this);
+	for(FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
 		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
 		{
 			AbilitySpecInputPressed(AbilitySpec);
-			if (!AbilitySpec.IsActive())
+			if(AbilitySpec.IsActive())
+			{
+				InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputPressed, AbilitySpec.Handle, AbilitySpec.ActivationInfo.GetActivationPredictionKey());
+			}
+		}	
+	}
+}
+
+void UCubeAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
+{
+	if(!InputTag.IsValid()) return;
+	FScopedAbilityListLock ActiveScopeLock(*this);
+	for(FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+		{
+			AbilitySpecInputPressed(AbilitySpec);
+			if(!AbilitySpec.IsActive())
 			{
 				TryActivateAbility(AbilitySpec.Handle);
 			}
-		}
+		}	
 	}
 }
 
 void UCubeAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
 {
-	if (!InputTag.IsValid()) return;
-	for(FGameplayAbilitySpec& AbilitySpec: GetActivatableAbilities())
+	if(!InputTag.IsValid()) return;
+	FScopedAbilityListLock ActiveScopeLock(*this);
+	for(FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
-		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag) && AbilitySpec.IsActive())
 		{
 			AbilitySpecInputReleased(AbilitySpec);
-		}
+			InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputReleased, AbilitySpec.Handle, AbilitySpec.ActivationInfo.GetActivationPredictionKey());
+		}	
 	}
 }
 
