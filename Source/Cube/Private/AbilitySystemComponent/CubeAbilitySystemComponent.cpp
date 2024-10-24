@@ -12,9 +12,9 @@ void UCubeAbilitySystemComponent::AbilityActorInfoSet()
 
 void UCubeAbilitySystemComponent::SetupAbilities(const TArray<TSubclassOf<UGameplayAbility>>& InAbilities, const float Level)
 {
-	for (const TSubclassOf<UGameplayAbility> AbilityClass : InAbilities)
+	for (const TSubclassOf<UGameplayAbility>& GameplayAbilityClass : InAbilities)
 	{
-		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, Level);
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(GameplayAbilityClass, Level);
 		if (const UCubeGameplayAbility* CubeGameplayAbility = Cast<UCubeGameplayAbility>(AbilitySpec.Ability))
 		{
 			AbilitySpec.DynamicAbilityTags.AddTag(CubeGameplayAbility->InitialInputTag);
