@@ -25,11 +25,30 @@ void UCubeAbilitySystemComponent::SetupAbilities(const TArray<TSubclassOf<UGamep
 
 void UCubeAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
 {
-	
+	if (!InputTag.IsValid()) return;
+	for(FGameplayAbilitySpec& AbilitySpec: GetActivatableAbilities())
+	{
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+		{
+			AbilitySpecInputPressed(AbilitySpec);
+			if (!AbilitySpec.IsActive())
+			{
+				TryActivateAbility(AbilitySpec.Handle);
+			}
+		}
+	}
 }
 
 void UCubeAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
 {
+	if (!InputTag.IsValid()) return;
+	for(FGameplayAbilitySpec& AbilitySpec: GetActivatableAbilities())
+	{
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+		{
+			AbilitySpecInputReleased(AbilitySpec);
+		}
+	}
 }
 
 void UCubeAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveGameplayEffectHandle)

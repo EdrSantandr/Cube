@@ -22,7 +22,7 @@ public:
 
 	UFUNCTION()
 	void SetupAbilities(const TArray<TSubclassOf<UGameplayAbility>>& InAbilities, const float Level = 1.f);
-
+	
 	void AbilityInputTagHeld(const FGameplayTag& InputTag);
 	void AbilityInputTagReleased(const FGameplayTag& InputTag);
 	
