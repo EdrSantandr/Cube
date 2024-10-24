@@ -6,6 +6,7 @@
 #include "GameplayTagContainer.h"
 #include "GameFramework/PlayerController.h"
 #include "CubePlayerController.generated.h"
+class UCubeAbilitySystemComponent;
 class UCubeInputConfig;
 struct FInputActionValue;
 class UInputAction;
@@ -37,4 +38,9 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly, Category="CubeInput")
 	TObjectPtr<UCubeInputConfig> CubeInputConfig;
+
+	UPROPERTY()
+	TObjectPtr<UCubeAbilitySystemComponent> CubeAbilitySystemComponent = nullptr;
+
+	UCubeAbilitySystemComponent* GetAsc();
 };

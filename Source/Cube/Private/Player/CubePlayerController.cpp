@@ -2,7 +2,10 @@
 
 
 #include "Player/CubePlayerController.h"
+
+#include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
+#include "AbilitySystemComponent/CubeAbilitySystemComponent.h"
 #include "Input/CubeInputComponent.h"
 
 ACubePlayerController::ACubePlayerController()
@@ -60,4 +63,13 @@ void ACubePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 void ACubePlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
 	UE_LOG(LogTemp, Warning, TEXT("held: [%s]"), *InputTag.ToString());
+}
+
+UCubeAbilitySystemComponent* ACubePlayerController::GetAsc()
+{
+	if (CubeAbilitySystemComponent == nullptr)
+	{
+		CubeAbilitySystemComponent = Cast<UCubeAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
+	}
+	return CubeAbilitySystemComponent;
 }

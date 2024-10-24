@@ -3,6 +3,8 @@
 
 #include "AbilitySystemComponent/CubeAbilitySystemComponent.h"
 
+#include "AbilitySystemComponent/Abilities/CubeGameplayAbility.h"
+
 void UCubeAbilitySystemComponent::AbilityActorInfoSet()
 {
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UCubeAbilitySystemComponent::EffectApplied);
@@ -10,11 +12,24 @@ void UCubeAbilitySystemComponent::AbilityActorInfoSet()
 
 void UCubeAbilitySystemComponent::SetupAbilities(const TArray<TSubclassOf<UGameplayAbility>>& InAbilities, const float Level)
 {
-	for (auto AbilityClass : InAbilities)
+	for (const TSubclassOf<UGameplayAbility> AbilityClass : InAbilities)
 	{
-		const FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, Level);
-		GiveAbility(AbilitySpec);
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, Level);
+		if (const UCubeGameplayAbility* CubeGameplayAbility = Cast<UCubeGameplayAbility>(AbilitySpec.Ability))
+		{
+			AbilitySpec.DynamicAbilityTags.AddTag(CubeGameplayAbility->InitialInputTag);
+			GiveAbility(AbilitySpec);
+		}
 	}
+}
+
+void UCubeAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
+{
+	
+}
+
+void UCubeAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
+{
 }
 
 void UCubeAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveGameplayEffectHandle)
