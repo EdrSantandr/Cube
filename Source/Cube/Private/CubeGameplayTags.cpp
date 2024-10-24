@@ -8,6 +8,41 @@ FCubeGameplayTags FCubeGameplayTags::CubeGameplayTags;
 
 void FCubeGameplayTags::InitializeGameplayTags()
 {
+	/************************************ ABILITITIES COOLDOWN ***********************/ 
+	CubeGameplayTags.Cooldown_Movement_Backward = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Cooldown.Movement.Backward"),
+		FString("Cooldown.Movement.Backward for character"));
+
+	CubeGameplayTags.Cooldown_Movement_Forward = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Cooldown.Movement.Forward"),
+		FString("Cooldown.Movement.Forward for character"));
+
+	CubeGameplayTags.Cooldown_Movement_Left = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Cooldown.Movement.Left"),
+		FString("Cooldown.Movement.Left for character"));
+
+	CubeGameplayTags.Cooldown_Movement_Right = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Cooldown.Movement.Right"),
+		FString("Cooldown.Movement.Right for character"));
+	
+	
+	/************************************ ABILITIES ***********************/ 
+	CubeGameplayTags.Abilities_Movement_Backward = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Movement.Backward"),
+		FString("Abilities.Movement.Backward for character"));
+
+	CubeGameplayTags.Abilities_Movement_Forward = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Movement.Forward"),
+		FString("Abilities.Movement.Forward for character"));
+
+	CubeGameplayTags.Abilities_Movement_Left = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Movement.Left"),
+		FString("Abilities.Movement.Left for character"));
+
+	CubeGameplayTags.Abilities_Movement_Right = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Movement.Right"),
+		FString("Abilities.Movement.Right for character"));
+	
 	/************************************ PRIMARY ATTRIBUTES ***********************/ 
 	CubeGameplayTags.Attributes_Primary_MovementTime = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Primary.MovementTime"),
