@@ -12,3 +12,11 @@ void UMovementGameplayAbility::MovePawn(const FVector Direction, const float Sca
 		Character->AddMovementInput(Direction, Scale);
 	}
 }
+
+void UMovementGameplayAbility::MoveJump()
+{
+	if (ACharacter* Character = Cast<ACharacter>(GetAvatarActorFromActorInfo()))
+	{
+		Character->Jump();
+	}
+}

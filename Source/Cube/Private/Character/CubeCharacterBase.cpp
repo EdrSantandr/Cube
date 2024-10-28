@@ -39,6 +39,12 @@ void ACubeCharacterBase::AddMovementInput(FVector WorldDirection, float ScaleVal
 	}
 }
 
+void ACubeCharacterBase::Jump()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Custom Jump"));
+	Super::Jump();
+}
+
 UAbilitySystemComponent* ACubeCharacterBase::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;

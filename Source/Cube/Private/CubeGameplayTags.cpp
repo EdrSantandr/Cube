@@ -24,7 +24,10 @@ void FCubeGameplayTags::InitializeGameplayTags()
 	CubeGameplayTags.Cooldown_Movement_Right = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Cooldown.Movement.Right"),
 		FString("Cooldown.Movement.Right for character"));
-	
+
+	CubeGameplayTags.Cooldown_Movement_Jump = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Cooldown.Movement.Jump"),
+		FString("Cooldown.Movement.Jump for character"));
 	
 	/************************************ ABILITIES ***********************/ 
 	CubeGameplayTags.Abilities_Movement_Backward = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -42,6 +45,10 @@ void FCubeGameplayTags::InitializeGameplayTags()
 	CubeGameplayTags.Abilities_Movement_Right = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Movement.Right"),
 		FString("Abilities.Movement.Right for character"));
+
+	CubeGameplayTags.Abilities_Movement_Jump = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Abilities.Movement.Jump"),
+			FString("Abilities.Movement.Jump for character"));
 	
 	/************************************ PRIMARY ATTRIBUTES ***********************/ 
 	CubeGameplayTags.Attributes_Primary_MovementTime = UGameplayTagsManager::Get().AddNativeGameplayTag(

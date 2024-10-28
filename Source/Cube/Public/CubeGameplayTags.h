@@ -20,12 +20,14 @@ public:
 	FGameplayTag Cooldown_Movement_Right;
 	FGameplayTag Cooldown_Movement_Forward;
 	FGameplayTag Cooldown_Movement_Backward;
+	FGameplayTag Cooldown_Movement_Jump;
 	
 	// Abilities
 	FGameplayTag Abilities_Movement_Left;
 	FGameplayTag Abilities_Movement_Right;
 	FGameplayTag Abilities_Movement_Forward;
 	FGameplayTag Abilities_Movement_Backward;
+	FGameplayTag Abilities_Movement_Jump;
 	
 	// Primary Attributes
 	FGameplayTag Attributes_Primary_MovementTime;
@@ -41,7 +43,7 @@ public:
 	FGameplayTag Input_Movement_Right;
 	FGameplayTag Input_Movement_Left;
 	FGameplayTag Input_Movement_Jump;
-protected:
+
 private:
 	static FCubeGameplayTags CubeGameplayTags;
 };
