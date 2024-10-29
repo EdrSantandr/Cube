@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemComponent/CubeAbilitySystemComponent.h"
 #include "AbilitySystemComponent/CubeAttributeSet.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 ACubeCharacterBase::ACubeCharacterBase()
 {
@@ -14,30 +15,8 @@ ACubeCharacterBase::ACubeCharacterBase()
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 	AttributeSet = CreateDefaultSubobject<UCubeAttributeSet>("AttributeSet");
-}
 
-void ACubeCharacterBase::AddMovementInput(FVector WorldDirection, float ScaleValue, bool bForce)
-{
-	Super::AddMovementInput(WorldDirection, ScaleValue, bForce);
-	RotationDirection = WorldDirection * ScaleValue;
-	Translation = WorldDirection * ScaleValue * DistanceToMove;
-	InitialActorLocation = GetActorLocation();
-	const FVector FinalLocation = InitialActorLocation + Translation;
-	if (CanMoveNextLocation(FinalLocation))
-	{
-		if (const UCubeAttributeSet* CubeAttributeSet = Cast<UCubeAttributeSet>(AttributeSet))
-		{
-			InteractionTime = CubeAttributeSet->MovementTime.GetCurrentValue();
-			bMeshRotation = true;
-			ElapsedTimeRotation = 0.f;
-			CalculateDiagonal();
-			FVector ConstantRotation = FVector(1.f,1.f,1.f) * 90.f;
-			ConstantRotation *= WorldDirection;
-			FRotator FinalRotation = FRotator(ConstantRotation.X, 0.f,ConstantRotation.Y);
-			RotationDelegate.BindUFunction(this,"FinishMovement", FinalLocation, FinalRotation);
-			GetWorld()->GetTimerManager().SetTimer(RotationTimerHandle, RotationDelegate, InteractionTime, false);
-		}	
-	}
+	
 }
 
 void ACubeCharacterBase::Jump()
@@ -60,12 +39,14 @@ void ACubeCharacterBase::BeginPlay()
 void ACubeCharacterBase::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+	/*
 	if (bMeshRotation)
 	{
 		ElapsedTimeRotation += DeltaSeconds;
 		ControlTranslation();
 		ControlRotation(DeltaSeconds);
 	}
+	*/
 }
 
 void ACubeCharacterBase::CameraMovement(const FVector& NewLocation)

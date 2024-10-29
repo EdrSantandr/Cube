@@ -19,7 +19,6 @@ class CUBE_API ACubeCharacterBase : public ACharacter, public IAbilitySystemInte
 
 public:
 	ACubeCharacterBase();
-	virtual void AddMovementInput(FVector WorldDirection, float ScaleValue, bool bForce) override;
 	virtual void Jump() override;
 
 	UPROPERTY(EditDefaultsOnly, Category="CubeMovement")

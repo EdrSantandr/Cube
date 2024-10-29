@@ -3,6 +3,7 @@
 
 #include "Character/CubeCharacterPlayer.h"
 #include "Camera/CameraComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Player/CubePlayerController.h"
 #include "Player/CubePlayerState.h"
@@ -12,39 +13,27 @@ ACubeCharacterPlayer::ACubeCharacterPlayer()
 {
 	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
 	SpringArmComponent->SetupAttachment(GetRootComponent());
+	SpringArmComponent->SetUsingAbsoluteRotation(true);
 	SpringArmComponent->bUsePawnControlRotation = false;
 
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
 	CameraComponent->SetupAttachment(SpringArmComponent, USpringArmComponent::SocketName);
-	CameraComponent->bUsePawnControlRotation = false;
+	CameraComponent->bUsePawnControlRotation = true;
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0.f,400.f,0.f);
+	GetCharacterMovement()->bConstrainToPlane = true;
+	GetCharacterMovement()->bSnapToPlaneAtStart = true;
 	
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationRoll = false;
+	bUseControllerRotationYaw = false;
 }
 
 void ACubeCharacterPlayer::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 	InitActorInfo();
-}
-
-void ACubeCharacterPlayer::BeginPlay()
-{
-	Super::BeginPlay();
-	SpringArmComponent->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-	InitialCameraPosition = CameraComponent->GetComponentLocation();
-}
-
-void ACubeCharacterPlayer::CameraMovement(const FVector& NewLocation)
-{
-	FVector CameraLocation = InitialCameraPosition;
-	if (!FMath::IsNearlyZero(NewLocation.X))
-		CameraLocation.X += NewLocation.X;
-	if (!FMath::IsNearlyZero(NewLocation.Y))
-		CameraLocation.Y += NewLocation.Y;
-	/* todo: Uncomment this one if you like camera moving on Z Axis
-	if (!FMath::IsNearlyZero(NewLocation.Z))
-		CameraLocation.Z += NewLocation.Z;
-	*/
-	CameraComponent->SetWorldLocation(CameraLocation);
 }
 
 void ACubeCharacterPlayer::InitActorInfo() const
