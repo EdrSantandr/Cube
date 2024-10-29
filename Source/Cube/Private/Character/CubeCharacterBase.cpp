@@ -18,6 +18,7 @@ ACubeCharacterBase::ACubeCharacterBase()
 
 void ACubeCharacterBase::AddMovementInput(FVector WorldDirection, float ScaleValue, bool bForce)
 {
+	Super::AddMovementInput(WorldDirection, ScaleValue, bForce);
 	RotationDirection = WorldDirection * ScaleValue;
 	Translation = WorldDirection * ScaleValue * DistanceToMove;
 	InitialActorLocation = GetActorLocation();
