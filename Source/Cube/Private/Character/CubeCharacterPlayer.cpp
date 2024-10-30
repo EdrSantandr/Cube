@@ -18,7 +18,7 @@ ACubeCharacterPlayer::ACubeCharacterPlayer()
 
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
 	CameraComponent->SetupAttachment(SpringArmComponent, USpringArmComponent::SocketName);
-	CameraComponent->bUsePawnControlRotation = true;
+	CameraComponent->bUsePawnControlRotation = false;
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.f,400.f,0.f);
