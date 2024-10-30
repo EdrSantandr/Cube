@@ -33,10 +33,6 @@ void ACubePlayerController::SetupInputComponent()
 	{
 		CubeInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ACubePlayerController::Move);	
 	}
-	if (IsValid(LookAction))
-	{
-		CubeInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACubePlayerController::LookAt);	
-	}
 }
 
 void ACubePlayerController::Move(const FInputActionValue& InputActionValue)
@@ -52,16 +48,6 @@ void ACubePlayerController::Move(const FInputActionValue& InputActionValue)
 	{
 		ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
 		ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
-	}
-}
-
-void ACubePlayerController::LookAt(const FInputActionValue& InputActionValue)
-{
-	FVector2D LookAxisVector = InputActionValue.Get<FVector2D>();
-	if (APawn* ControlledPawn = GetPawn<APawn>())
-	{
-		ControlledPawn->AddControllerYawInput(LookAxisVector.X);
-		ControlledPawn->AddControllerPitchInput(LookAxisVector.Y);
 	}
 }
 
