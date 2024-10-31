@@ -18,4 +18,8 @@ class CUBE_API UCubeAbilitySystemFunctionLibrary : public UBlueprintFunctionLibr
 public:
 	UFUNCTION(BlueprintPure, Category="CubeSystemLibrary|WidgetController", meta=(DefaultToSelf="InWorldContextObject"))
 	static UOverlayWidgetController* GetOverlayWidgetController(const UObject* InWorldContextObject);
+
+	UFUNCTION(BlueprintPure,Category="CubeSystemLibrary|GameplayMechanics")
+	static TArray<FVector> EvenlySpreadVectors(const FVector& Forward, const FVector& Axis, float Spread, int32 NumVectors);
+
 };

@@ -33,3 +33,23 @@ UOverlayWidgetController* UCubeAbilitySystemFunctionLibrary::GetOverlayWidgetCon
 	}
 	return nullptr;
 }
+
+TArray<FVector> UCubeAbilitySystemFunctionLibrary::EvenlySpreadVectors(const FVector& Forward, const FVector& Axis, float Spread, int32 NumVectors)
+{
+	TArray<FVector> Vectors;
+	const FVector LeftOfSpread = Forward.RotateAngleAxis(-Spread/2.f, Axis);
+	if (NumVectors>1)
+	{
+		const float DeltaSpread = Spread / (NumVectors-1);
+		for(int32 i=0; i<NumVectors;i++)
+		{
+			const FVector Direction = LeftOfSpread.RotateAngleAxis(DeltaSpread*i, Axis);
+			Vectors.Add(Direction);
+		}
+	}
+	else
+	{
+		Vectors.Add(Forward);
+	}
+	return Vectors;
+}
