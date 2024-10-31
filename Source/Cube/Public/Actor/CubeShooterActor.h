@@ -4,22 +4,26 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Interfaces/ShooterInterface.h"
 #include "CubeShooterActor.generated.h"
 
 class ACubeProjectileActor;
 
 UCLASS()
-class CUBE_API ACubeShooterActor : public AActor
+class CUBE_API ACubeShooterActor : public AActor, public IShooterInterface
 {
 	GENERATED_BODY()
 	
 public:	
 	ACubeShooterActor();
 
+	/*Shooter interface*/
+	virtual void PerformShoot_Implementation() override;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UStaticMeshComponent> MeshComponent;
 
-	UPROPERTY(EditDefaultsOnly, Category="Projectile")
+	UPROPERTY(EditAnywhere, Category="Projectile")
 	TSubclassOf<ACubeProjectileActor> ProjectileClass;
 
 	UPROPERTY(EditDefaultsOnly, Category="Projectile")
