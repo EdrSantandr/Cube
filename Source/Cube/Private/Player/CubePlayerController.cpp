@@ -6,6 +6,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
 #include "AbilitySystemComponent/CubeAbilitySystemComponent.h"
+#include "GameFramework/Character.h"
 #include "Input/CubeInputComponent.h"
 
 ACubePlayerController::ACubePlayerController()
@@ -33,6 +34,10 @@ void ACubePlayerController::SetupInputComponent()
 	{
 		CubeInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ACubePlayerController::Move);	
 	}
+	if (IsValid(JumpAction))
+	{
+		CubeInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACubePlayerController::Jump);	
+	}
 }
 
 void ACubePlayerController::Move(const FInputActionValue& InputActionValue)
@@ -48,6 +53,14 @@ void ACubePlayerController::Move(const FInputActionValue& InputActionValue)
 	{
 		ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
 		ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
+	}
+}
+
+void ACubePlayerController::Jump(const FInputActionValue& InputActionValue)
+{
+	if (ACharacter* ControlledCharacter = GetPawn<ACharacter>())
+	{
+		ControlledCharacter->Jump();
 	}
 }
 

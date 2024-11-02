@@ -31,6 +31,8 @@ private:
 	TObjectPtr<UInputMappingContext> CubeContext;
 
 	void Move(const FInputActionValue& InputActionValue);
+
+	void Jump(const FInputActionValue& InputActionValue);
 	
 	UFUNCTION(BlueprintCallable, Category="CubeInput")
 	void AbilityInputTagPressed(FGameplayTag InputTag);
@@ -46,6 +48,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category="CubeInput")
 	TObjectPtr<UInputAction> MoveAction;
+
+	UPROPERTY(EditDefaultsOnly, Category="CubeInput")
+	TObjectPtr<UInputAction> JumpAction;
 	
 	UPROPERTY()
 	TObjectPtr<UCubeAbilitySystemComponent> CubeAbilitySystemComponent = nullptr;
