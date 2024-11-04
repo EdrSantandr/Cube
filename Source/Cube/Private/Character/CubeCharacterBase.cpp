@@ -16,12 +16,6 @@ ACubeCharacterBase::ACubeCharacterBase()
 	AttributeSet = CreateDefaultSubobject<UCubeAttributeSet>("AttributeSet");
 }
 
-void ACubeCharacterBase::Jump()
-{
-	UE_LOG(LogTemp, Warning, TEXT("Custom Jump"));
-	Super::Jump();
-}
-
 UAbilitySystemComponent* ACubeCharacterBase::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;

@@ -19,8 +19,6 @@ class CUBE_API ACubeCharacterBase : public ACharacter, public IAbilitySystemInte
 
 public:
 	ACubeCharacterBase();
-	virtual void Jump() override;
-	
 
 	/*Ability system Interface*/
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
