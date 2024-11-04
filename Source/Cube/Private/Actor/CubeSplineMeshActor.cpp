@@ -12,6 +12,17 @@ ACubeSplineMeshActor::ACubeSplineMeshActor()
 	SetRootComponent(SplineComponent);
 }
 
+void ACubeSplineMeshActor::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (AutoSpawn)
+	{
+		InteractionTimerDelegate.BindUObject(this, &ACubeSplineMeshActor::InteractionStart);
+		GetWorld()->GetTimerManager().SetTimer(InteractionTimerHandle, InteractionTimerDelegate, StartInteractionTime, false);
+	}
+}
+
 void ACubeSplineMeshActor::SpawnActorsOnSpline()
 {
 	check(BlockingClass);
@@ -24,8 +35,26 @@ void ACubeSplineMeshActor::SpawnActorsOnSpline()
 	}
 }
 
-void ACubeSplineMeshActor::BeginPlay()
+void ACubeSplineMeshActor::InteractionStart()
 {
-	Super::BeginPlay();
-	
+	UE_LOG(LogTemp, Warning, TEXT("Calling InteractionStart"));
+	if (BlockingClass)
+	{
+		const FTransform PointTransform = SplineComponent->GetTransformAtSplinePoint(0, ESplineCoordinateSpace::World);
+		FActorSpawnParameters SpawnParameters;
+		SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		SpawnedActor = GetWorld()->SpawnActor<AActor>(BlockingClass, PointTransform, SpawnParameters);
+		if (InteractionType == ESplineActorType::OneShot)
+			MoveSpawnedBlockingOneShot();		
+		if (InteractionType == ESplineActorType::Loop)
+			MoveSpawnedBlockingLoop();
+	}
+	GetWorld()->GetTimerManager().ClearTimer(InteractionTimerHandle);
+}
+
+void ACubeSplineMeshActor::Destroyed()
+{
+	Super::Destroyed();
+	GetWorld()->GetTimerManager().ClearTimer(InteractionTimerHandle);
+	GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
 }
