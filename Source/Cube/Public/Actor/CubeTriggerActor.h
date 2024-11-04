@@ -9,6 +9,13 @@
 class ACubeSplineMeshActor;
 class UBoxComponent;
 
+UENUM(BlueprintType)
+enum class ETriggerActorType : uint8
+{
+	OneShot,
+	Infinite
+};
+
 UCLASS()
 class CUBE_API ACubeTriggerActor : public AActor
 {
@@ -19,6 +26,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="Blocking")
 	TArray<ACubeSplineMeshActor*> SpawnSplines;
+
+	UPROPERTY(EditAnywhere, Category="Blocking")
+	ETriggerActorType TriggerType = ETriggerActorType::OneShot; 
 
 protected:
 	virtual void BeginPlay() override;

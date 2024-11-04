@@ -21,10 +21,13 @@ void ACubeTriggerActor::BeginPlay()
 
 void ACubeTriggerActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	const int32 SplineNumber = SpawnSplines.Num();
-	UE_LOG(LogTemp, Warning, TEXT("Spawn blocking SplineNumber = [%i]"), SplineNumber);
-	for (ACubeSplineMeshActor* Spline : SpawnSplines)
+	if (TriggerType == ETriggerActorType::OneShot)
 	{
-		Spline->SpawnActorsOnSpline();
+		const int32 SplineNumber = SpawnSplines.Num();
+		for (ACubeSplineMeshActor* Spline : SpawnSplines)
+		{
+			Spline->SpawnActorsOnSpline();
+		}
+		BoxComponent->OnComponentBeginOverlap.RemoveAll(this);
 	}
 }
