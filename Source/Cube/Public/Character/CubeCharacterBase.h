@@ -20,19 +20,13 @@ class CUBE_API ACubeCharacterBase : public ACharacter, public IAbilitySystemInte
 public:
 	ACubeCharacterBase();
 	virtual void Jump() override;
-
-	UPROPERTY(EditDefaultsOnly, Category="CubeMovement")
-	float DistanceToMove = 100.f;
+	
 
 	/*Ability system Interface*/
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
 	virtual void BeginPlay() override;
-
-	virtual void Tick(float DeltaSeconds) override;
-
-	virtual void CameraMovement(const FVector& NewLocation);
 
 protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Attributes")
@@ -47,12 +41,6 @@ protected:
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
 
-	FTimerHandle RotationTimerHandle;
-	FTimerDelegate RotationDelegate;
-
-	UFUNCTION()
-	void FinishMovement(const FVector& InActorLocation, const FRotator& InActorRotation);
-
 	UFUNCTION()
 	void InitAbilityActorInfo();
 
@@ -66,29 +54,6 @@ private:
 	UFUNCTION()
 	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& InGameplayEffectClass, float InLevel = 1.f) const;
 	
-	bool bMeshRotation = false;
-	FVector Translation = FVector::ZeroVector;
-	float ElapsedTimeRotation = 0.f;
-	float SquareDiagonal = 0.f;
-	float SquareExtend = 0.f;
-	float InteractionTime = 0.f;
-	float InitialHeight = 0.f;
-	FVector InitialActorLocation = FVector::ZeroVector;
-	FVector RotationDirection = FVector::ZeroVector;
-	FRotator TotalRotation = FRotator::ZeroRotator;
-	
-	UFUNCTION()
-	void ControlTranslation();
-
-	UFUNCTION()
-	void ControlRotation(float const InDelta);
-
-	UFUNCTION()
-	void CalculateDiagonal();
-
-	UFUNCTION()
-	bool CanMoveNextLocation(const FVector& NextLocation) const;
-
 	UPROPERTY(EditAnywhere, Category="Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> InitialAbilities;
 };
