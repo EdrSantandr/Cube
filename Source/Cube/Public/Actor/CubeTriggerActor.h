@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "CubeTriggerActor.generated.h"
 
+class ACubeSplineMeshActor;
 class UBoxComponent;
 
 UCLASS()
@@ -15,6 +16,9 @@ class CUBE_API ACubeTriggerActor : public AActor
 	
 public:	
 	ACubeTriggerActor();
+
+	UPROPERTY(EditAnywhere, Category="Blocking")
+	TArray<ACubeSplineMeshActor*> SpawnSplines;
 
 protected:
 	virtual void BeginPlay() override;
